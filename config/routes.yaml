@@ -1,3 +1,7 @@
+app_prompt:
+    path: /
+    controller: App\Controller\PromptController::show
+
 controllers:
     resource:
         path: ../src/Controller/

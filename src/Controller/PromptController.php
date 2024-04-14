@@ -9,6 +9,7 @@ class PromptController extends AbstractController
 {
     public function show(): Response
     {
+        // TODO: define prompts and pull from database using entity/repository
         $prompt = "Make an open-faced sandwich";
         return $this->render('prompt.html.twig', [
             'prompt' => $prompt,

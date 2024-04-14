@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prompt index{% endblock %}
+
+{% block body %}
+    <h1>Prompt index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Text</th>
+                <th>Use_date</th>
+                <th>Created_timestamp</th>
+                <th>Updated_timestamp</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for prompt in prompts %}
+            <tr>
+                <td>{{ prompt.id }}</td>
+                <td>{{ prompt.text }}</td>
+                <td>{{ prompt.useDate ? prompt.useDate|date('Y-m-d') : '' }}</td>
+                <td>{{ prompt.createdTimestamp ? prompt.createdTimestamp|date('Y-m-d H:i:s T') : '' }}</td>
+                <td>{{ prompt.updatedTimestamp ? prompt.updatedTimestamp|date('Y-m-d H:i:s T') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_prompt_show', {'id': prompt.id}) }}">show</a>
+                    <a href="{{ path('app_prompt_edit', {'id': prompt.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_prompt_new') }}">Create new</a>
+{% endblock %}

@@ -1,38 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Prompt{% endblock %}
-
 {% block body %}
-    <h1>Prompt</h1>
+    <div id="thanks">
+        {{ thanks ? 'Thanks for suggesting something to do.another day' : '' }}
+    </div>
+    <div id="intro">
+        Today is <b>{{ prompt.useDate ? prompt.useDate|date('Y-m-d') : '' }}</b>. Here is something we're doing.
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ prompt.id }}</td>
-            </tr>
-            <tr>
-                <th>Text</th>
-                <td>{{ prompt.text }}</td>
-            </tr>
-            <tr>
-                <th>Use_date</th>
-                <td>{{ prompt.useDate ? prompt.useDate|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Created_timestamp</th>
-                <td>{{ prompt.createdTimestamp ? prompt.createdTimestamp|date('Y-m-d H:i:s T') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated_timestamp</th>
-                <td>{{ prompt.updatedTimestamp ? prompt.updatedTimestamp|date('Y-m-d H:i:s T') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div id="today-prompt">{{ prompt.text }}</div>
 
-    <a href="{{ path('app_prompt_index') }}">back to list</a>
+    <a id="suggest" href="{{ path('app_prompt_new') }}">suggest something to do another day</a>
 
-    <a href="{{ path('app_prompt_edit', {'id': prompt.id}) }}">edit</a>
-
-    {{ include('prompt/_delete_form.html.twig') }}
+    <a id="about-link" href="{{ path('app_about') }}">what is this thing</a>
 {% endblock %}

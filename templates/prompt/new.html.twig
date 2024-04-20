@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Prompt{% endblock %}
-
 {% block body %}
-    <h1>Create new Prompt</h1>
+    <div>suggest something to do.another day</div>
 
     {{ include('prompt/_form.html.twig') }}
 
-    <a href="{{ path('app_prompt_index') }}">back to list</a>
+    <a href="{{ path('app_prompt_show') }}">back to today's something</a>
 {% endblock %}

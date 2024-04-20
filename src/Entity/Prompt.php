@@ -20,10 +20,12 @@ class Prompt
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $use_date = null;
 
-    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, nullable: false, insertable: false, updatable: false)]
     private ?\DateTimeInterface $created_timestamp = null;
 
-    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE)]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, nullable: false, insertable: false, updatable: false)]
     private ?\DateTimeInterface $updated_timestamp = null;
 
     public function getId(): ?int
@@ -60,22 +62,8 @@ class Prompt
         return $this->created_timestamp;
     }
 
-    public function setCreatedTimestamp(\DateTimeInterface $created_timestamp): static
-    {
-        $this->created_timestamp = $created_timestamp;
-
-        return $this;
-    }
-
     public function getUpdatedTimestamp(): ?\DateTimeInterface
     {
         return $this->updated_timestamp;
-    }
-
-    public function setUpdatedTimestamp(\DateTimeInterface $updated_timestamp): static
-    {
-        $this->updated_timestamp = $updated_timestamp;
-
-        return $this;
     }
 }

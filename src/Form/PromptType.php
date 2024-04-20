@@ -13,15 +13,7 @@ class PromptType extends AbstractType
     {
         $builder
             ->add('text')
-            ->add('use_date', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('created_timestamp', null, [
-                'widget' => 'single_text',
-            ])
-            ->add('updated_timestamp', null, [
-                'widget' => 'single_text',
-            ])
+            ->add('use_date')
         ;
     }
 

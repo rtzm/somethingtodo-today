@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>What is this thing?</h2>
+    <div>
+        This is a mostly offline social media app. We all are going to do something simultaneously today.
+    </div>
+    
+    <h2>What data do you collect?</h2>
+    <div>
+        These tasks are anonymous. You don't know who else is doing them, and we don't ask.
+    </div>
+    <div>
+        If you want to offer suggestions for things we should do someday, we collect that data <a href="{{ path('app_prompt_new') }}">here</a>.
+    </div>
+
+    <h2>What's in there?</h2>
+    <div>The code for this site is <a href="https://github.com/rtzm/somethingtodo-today">on GitHub here</a>.
+{% endblock %}

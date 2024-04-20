@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id="thanks">
+        {{ thanks ? 'Thanks for suggesting something to do.another day' : '' }}
+    </div>
+    <div id="intro">
+        Today is <b>{{ prompt.useDate ? prompt.useDate|date('Y-m-d') : '' }}</b>. Here is something we're doing.
+    </div>
+
+    <div id="today-prompt">{{ prompt.text }}</div>
+
+    <a id="suggest" href="{{ path('app_prompt_new') }}">suggest something to do another day</a>
+
+    <a id="about-link" href="{{ path('app_about') }}">what is this thing</a>
+{% endblock %}

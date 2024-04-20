@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>suggest something to do.another day</div>
+
+    {{ include('prompt/_form.html.twig') }}
+
+    <a href="{{ path('app_prompt_show') }}">back to today's something</a>
+{% endblock %}

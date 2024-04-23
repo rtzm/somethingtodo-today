@@ -10,9 +10,16 @@ A mostly-offline social media app
 
 ## TODO:
 1. Fix the CSS
-1. Add some JS to prevent spamming the form?
-1. Figure out authentication and lock down admin pages
 1. Figure out deployment and deploy
+    1. Create and deploy database (RDS?)
+    1. Generate database secrets and store
+    1. Deploy app (EKS? EC2?)
+    1. Deploy secrets https://symfony.com/doc/current/configuration/secrets.html#deploy-secrets-to-production
+    1. Update main user with ROLE_ADMIN
+        1. `symfony console dbal:run-sql "UPDATE users set roles='[\"ROLE_ADMIN\"]' where id = 1"`
+    1. Lock down registration form
+    1. Come up with a workflow/action for continuous deploy
+1. Confirm cloudflare captcha working
 1. Populate the database with some starter prompts (see below)
 1. Start circulating
 

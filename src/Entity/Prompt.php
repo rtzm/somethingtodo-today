@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PromptRepository::class)]
+#[ORM\Index(name: "use_date_idx", columns: ["use_date"])]
 class Prompt
 {
     #[ORM\Id]
@@ -21,11 +22,11 @@ class Prompt
     private ?\DateTimeInterface $use_date = null;
 
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, nullable: false, insertable: false, updatable: false)]
+    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, nullable: false, insertable: false, updatable: false, options: ["default" => "CURRENT_TIMESTAMP"])]
     private ?\DateTimeInterface $created_timestamp = null;
 
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, nullable: false, insertable: false, updatable: false)]
+    #[ORM\Column(type: Types::DATETIMETZ_MUTABLE, nullable: false, insertable: false, updatable: false, options: ["default" => "CURRENT_TIMESTAMP"])]
     private ?\DateTimeInterface $updated_timestamp = null;
 
     public function getId(): ?int

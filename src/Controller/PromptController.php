@@ -9,18 +9,20 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 class PromptController extends AbstractController
 {
-    #[Route('/prompt', name: 'app_prompt_index', methods: ['GET'])]
+    #[Route('/admin/prompt', name: 'app_prompt_index', methods: ['GET'])]
     public function index(PromptRepository $promptRepository): Response
     {
-        // TODO: lock this behind a login check
         return $this->render('prompt/index.html.twig', [
             'prompts' => $promptRepository->findAll(),
         ]);
@@ -36,6 +38,7 @@ class PromptController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->validateCaptcha($form);
             $entityManager->persist($prompt);
             $entityManager->flush();
 
@@ -45,8 +48,55 @@ class PromptController extends AbstractController
         return $this->render('prompt/new.html.twig', [
             'prompt' => $prompt,
             'form' => $form,
+            'cloudflareSiteKey' => $this->getParameter('cloudflare.site_key')
         ]);
     }
+
+    /**
+     * 
+     * TODO: move this to a validator?
+     * 
+     * @throws BadRequestHttpException
+     */
+    private function validateCaptcha(FormInterface $form): void
+    {
+        if (empty($this->getParameter('cloudflare.site_key'))) {
+            return;
+        }
+
+        $turnstileCode = $form->getData()['cf-turnstile-response'];
+
+        if (!$turnstileCode) {
+            throw new BadRequestHttpException('Failed spam protection');
+        }
+
+        if (!$this->turnstileCodeIsValid($turnstileCode)) {
+            throw new BadRequestHttpException('Failed spam protection');
+        }        
+    }
+
+    /**
+     * Make an HTTP call to the Turnstile API to verify the code.
+     * TODO: make this work
+     * TODO: move this to a validator?
+     */
+    private function turnstileCodeIsValid(string $turnstileCode): bool
+    {
+        $client = HttpClient::create();
+        $response = $client->request(
+            'POST',
+            'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+            [
+                "data" => [
+                    'secret' => $this->getParameter('cloudflare.secret_key'),
+                    'response' => $turnstileCode,
+                ]
+            ]
+        );
+        $responseBody = json_decode($response->getContent());
+        return $responseBody->success;
+    }
+
 
     #[Route('/', name: 'app_prompt_show', methods: ['GET'])]
     public function show(
@@ -67,10 +117,9 @@ class PromptController extends AbstractController
         ]);
     }
 
-    #[Route('/prompt/{id}/edit', name: 'app_prompt_edit', methods: ['GET', 'POST'])]
+    #[Route('/admin/prompt/{id}/edit', name: 'app_prompt_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Prompt $prompt, EntityManagerInterface $entityManager): Response
     {
-        // TODO: lock this behind a login
         $form = $this->createForm(PromptType::class, $prompt);
         $form->handleRequest($request);
 
@@ -86,10 +135,9 @@ class PromptController extends AbstractController
         ]);
     }
 
-    #[Route('/prompt/{id}', name: 'app_prompt_delete', methods: ['POST'])]
+    #[Route('/admin/prompt/{id}', name: 'app_prompt_delete', methods: ['POST'])]
     public function delete(Request $request, Prompt $prompt, EntityManagerInterface $entityManager): Response
     {
-        // TODO: lock this behind a login
         if ($this->isCsrfTokenValid('delete'.$prompt->getId(), $request->getPayload()->get('_token'))) {
             $entityManager->remove($prompt);
             $entityManager->flush();

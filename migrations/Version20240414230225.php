@@ -14,7 +14,7 @@ final class Version20240414230225 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Initial migration to set up prompt table';
+        return 'Initial migration to set up prompt table, with triggers and index';
     }
 
     public function up(Schema $schema): void
@@ -46,6 +46,5 @@ final class Version20240414230225 extends AbstractMigration
         $this->addSql('DROP FUNCTION update_updated_timestamp_column');
         $this->addSql('DROP TRIGGER update_prompt_updated_timestamp');
         $this->addSql('DROP TABLE prompt');
-
     }
 }

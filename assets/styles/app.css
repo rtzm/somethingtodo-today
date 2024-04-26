@@ -1,3 +1,24 @@
 body {
-    background-color: skyblue;
+    margin: 20px auto;
+    width: 540px;
+    text-align: center;
+    border-width: 20px;
+    border-style: ridge;
+    border-color: cornflowerblue;
+    background-color: burlywood;
+}
+
+body div {
+    text-align: left;
+    margin: 10px;
+}
+
+body > a {
+    display: block;
+    margin-bottom: 8px;
+}
+
+#today-prompt {
+    background-color: lavender;
+    padding: 14px;
 }
